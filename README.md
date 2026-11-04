@@ -8,29 +8,9 @@ It allows you to upload, download and list text files in the server.
 
 The server listen a specific port and handdle multiples connections.
 
-## Project shape
-
-```
-socket-udp-text-file-manager/
-├── client/
-│   ├── ...
-│   └── ...
-├── server/
-│   └── ...
-└── README.md
-```
-
-## Requirements
-
-- Python 3.8 +
-
-A instalação de nenhuma biblioteca externa se faz necessária, pois o projeto usa apenas módulos da biblioteca padrão do Python.
-
-
 ## Getting started
 
 #### Clone this repository to your local machine
-
 
 ```bash
 git clone https://github.com/BezerraFilipe/socket-udp-text-file-manager.git
@@ -38,10 +18,28 @@ git clone https://github.com/BezerraFilipe/socket-udp-text-file-manager.git
 
 #### Navigate into the project directory:
 
-
 ```bash
 cd work/directory/socket-udp-text-file-manager/
 ```
+
+### Requirements
+
+- Python 3.8+
+
+## Project shape
+
+```
+socket-udp-text-file-manager/
+├── client/
+│   ├── files/
+│   └── client.py
+├── server/
+│   └── files/
+│   └── server.py
+└── README.md
+```
+
+## Usage
 
 #### Run the server
 
@@ -49,6 +47,11 @@ cd work/directory/socket-udp-text-file-manager/
 
 ```bash
 python3 server/server.py
+```
+
+Expected output: 
+```
+UDP server listening on 127.0.0.1:8080
 ```
 
 #### Run the client (another terminal)
@@ -59,79 +62,25 @@ python3 server/server.py
 python3 client/client.py
 ```
 
-
-
-Saída esperada:
-
-```text
-Conectado a 127.0.0.1:8080. 
-
-Use:
-1) Upload de arquivo
-2) Download de arquivo
-3) Listar arquivos
-4) Encerrar Execução
-
+Expected output: 
+```
+Options:
+1. List files in server directory
+2. Upload a text file to the server
+3. Download a text file from the server
+4. Exit
+Enter your choice (1-4): 
 ```
 
-Agora você pode digitar comandos no terminal do cliente.
+Now you can interact with server from client.
 
-#### 4. Envie um arquivo (UPLOAD)
+## How it works
 
-Crie um arquivo de teste na pasta `cliente/`, por exemplo `sonic.webm`.
+- The files can only be transfer from client/files and server/files directories. So if you want to test (download or upload) a diferent file from the example, you must create it on the specified directory.
 
+- The server runs on 127.0.0.1:8080
 
-```text
-> UPLOAD cliente/sonic.webm
-```
+- You can open multiples clients and see the respective response from server.
 
-Saída esperada:
+- To refer a file, you only need to write it name with the file extension. e.g. "client_file00.txt"
 
-```text
-OK upload de sonic.webm concluido
-```
-
-O arquivo será salvo em `servidor/arquivos/sonic.webm`. 
-
-#### 5. Liste os arquivos (LIST)
-
-```text
-> LIST
-```
-
-O cliente mostrará o nome, o tamanho em bytes, a data de modificação e o endereço da conexão do cliente que solicitou a listagem.
-
-#### 6. Baixe um arquivo (DOWNLOAD)
-
-```text
-> DOWNLOAD sonic.webm
-```
-
-O arquivo será salvo na pasta de onde você executou o cliente.
-
-#### 7. Encerre a conexão
-
-```text
-> EXIT
-```
-
-Se você configurou apenas um cliente, o servidor terminará depois dessa conexão. Para iniciar outro teste, execute novamente o servidor antes do cliente.
-
-## Comandos disponíveis
-
-| Comando | Função | Exemplo |
-| --- | --- | --- |
-| `UPLOAD <caminho>` | Envia um arquivo local ao servidor | `UPLOAD cliente/sonic.webm` |
-| `DOWNLOAD <nome>` | Baixa um arquivo do servidor | `DOWNLOAD sonic.webm` |
-| `LIST` | Lista os arquivos armazenados | `LIST` |
-| `EXIT` | Encerra a sessão do cliente | `EXIT` |
-
-## Configuração de rede
-
-Por padrão, ambos os scripts utilizam:
-
-```python
-HOST = "127.0.0.1"
-PORTA = 8080
-```
- 
