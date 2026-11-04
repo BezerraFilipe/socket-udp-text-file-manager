@@ -82,5 +82,8 @@ Now you can interact with server from client.
 
 - You can open multiples clients and see the respective response from server.
 
+- When a new client is created, a random high port will be made available to it.
+
 - To refer a file, you only need to write it name with the file extension. e.g. "client_file00.txt"
+
 
