@@ -1,4 +1,5 @@
 import socket
+import json
 from pathlib import Path
 
 # the server's IP address and port number to bind the server socket
@@ -44,9 +45,21 @@ def handle_download_request(udp_socket, file_name, client_addr):
 def handle_list_files_request(udp_socket, client_addr):
     print(f"Listing files for {client_addr}...")
 
-    files = [f.name for f in SERVER_FILE_DIRECTORY.iterdir() if f.is_file()]
-    
-    response = "\n".join(files) if files else "No files available."
+    files = []
+
+    for path in SERVER_FILE_DIRECTORY.iterdir():
+        if path.is_file():
+            metadata = path.stat()
+
+            files.append({
+                "name": path.name,
+                "size": metadata.st_size,
+                "extension": path.suffix,
+                "last_modified": metadata.st_mtime
+            })
+
+    response = json.dumps(files) if files else "[]"
+
     udp_socket.sendto(response.encode("utf-8"), client_addr)
 
 def main():
