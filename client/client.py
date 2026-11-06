@@ -1,5 +1,7 @@
+import json
 import socket
 from pathlib import Path
+from datetime import datetime
 
 # the server's IP address and port number
 HOST = "127.0.0.1"
@@ -40,12 +42,20 @@ def list_files_in_server_directory(udp_socket, server_addr):
 
     # Receive the list of files from the server
     data, _ = udp_socket.recvfrom(4096)
-    file_list = data.decode("utf-8").splitlines()
+    file_list = json.loads(data.decode("utf-8"))
 
     print("\nFiles in server directory:")
-    for file_name in file_list:
-        print(f"- {file_name}")
 
+    if not file_list:
+        print("No files available.")
+        return
+
+    for file in file_list:
+        print(f"\nName: {file['name']}")
+        print(f"Size: {file['size']} bytes")
+        print(f"Extension: {file['extension']}")
+        print(f"Last modified: "f"{datetime.fromtimestamp(file['last_modified'])}")
+        
 def download_text_file(file_name, udp_socket, server_addr):
     # Send the file name to the server
     header = f"DOWNLOAD: {file_name}"
